@@ -1,30 +1,57 @@
 # Example of the Beckett cutscene language for Godot.
-# All keywords are CASE INSENSITIVE! 
+# All keywords are CASE INSENSITIVE! This allows you to either keep strict
+# "human" grammar (all sentences must start with a capital letter) or a more
+# lax "programmer-centric" approach (all-lowercase)
 
-Scene: Tutorial 1
+/*
+ * In general, whenever you are  pointing to an object in the scene (a character,
+ * a location, a prop, a node, etc), you can either write its fully qualified
+ * name ("MyCharacter") OR a more natural form ("My Character" or
+ * "my character"). In the latter form, Beckett concatenates the name with a
+ * preset concatenation style.
+ * A NOTABLE exception: all cast of a scene must be a single string.
+ * Concatenation style options:
+ * - camelCase, so "my character" would become myCharacter
+ * - snake_case, so "My Character" would become "my_character"
+ * - PascalCase, so "My character" would become "MyCharacter"
+ */
 
-# The basic scene to load. Contains tileset, marks for characters, etc.
-# You configure the contents of the scene, its characters, and any effects that
-# need to happen in the editor. This includes setting up animations for each
-# character.
-# This should be the path to the scene (alternatively namedclass of the script?)
-Location: AlchymicaHouse
+# "Preprocessing" directives declare global information about your cutscene,
+# such as the Godot scene to be used as the viewport/root of display, the name
+# of the scene (to be referenced from GDscript/C#/etc).
+Scene: Tutorial1
+
+ /*
+ * The basic scene to load. Contains tileset, marks for characters, etc.
+ * You configure the contents of the scene, its characters, and any effects that
+ * need to happen in the editor. This includes setting up animations for each
+ * character.
+ * This should be the path to the scene (alternatively namedclass of the script?)
+ * For this location (Alchymica House), the following concatenated values would
+ * be used:
+ * - "alchymica_house" for snake case
+ * - "AlchymicaHouse" for Pascal case
+ * - "alchymicaHouse" for camel case
+ */
+Location: Alchymica House
 
 # Alternative way to spawn in characters. Maybe this makes it easier to 
 # Maintain characters across cutscenes?
 
 Cast:
-  Dannie
-  Alchymica
-  Adelphe
+  Dannie in the corner of the room
+  Alchymica beside the bed
+  Adelphe in the bed
 
 # Signifies start of the cutscene's manuscript
 Fade in
 
 # Dialogue (or anything that goes into the dialogue boxes).
 # Syntax:
-# [meanwhile] <character>[(portrait_variant)]: <translation_key>
+# <character>[(portrait_variant)]: <translation_key>
 Dannie(happily): I do believe we are acting out a scene.
+
+Dannie: Go set an example of them.
 
 # Actions direct characters to perform an animation, optionally with a target
 # location and timing.
@@ -41,6 +68,7 @@ Dannie sobs for 5 seconds
 # Using "meanwhile" causes a direction to take effect at the same time as the
 # currently executing direction (Dannie sobbing).
 Meanwhile Alchymica mixes a potion for 4 seconds
+meanwhile, Alchymica mixes a potion for 4 seconds
 
 # Using a pronoun (he/she/they) automatically references the last directed
 # character. The language itself does not differentiate (pronouns for nodes
