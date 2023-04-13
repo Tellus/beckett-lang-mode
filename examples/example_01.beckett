@@ -1,0 +1,59 @@
+# Example of the Beckett cutscene language for Godot.
+# All keywords are CASE INSENSITIVE! 
+
+Scene: Tutorial 1
+
+# The basic scene to load. Contains tileset, marks for characters, etc.
+# You configure the contents of the scene, its characters, and any effects that
+# need to happen in the editor. This includes setting up animations for each
+# character.
+# This should be the path to the scene (alternatively namedclass of the script?)
+Location: AlchymicaHouse
+
+# Alternative way to spawn in characters. Maybe this makes it easier to 
+# Maintain characters across cutscenes?
+
+Cast:
+  Dannie
+  Alchymica
+  Adelphe
+
+# Signifies start of the cutscene's manuscript
+Fade in
+
+# Dialogue (or anything that goes into the dialogue boxes).
+# Syntax:
+# [meanwhile] <character>[(portrait_variant)]: <translation_key>
+Dannie(happily): I do believe we are acting out a scene.
+
+# Actions direct characters to perform an animation, optionally with a target
+# location and timing.
+# Syntax:
+# <character> <animation_name>s [to the <node>] in/for <movement_time> <time_unit>
+# The "s" for present tense is optional, but makes the language more natural.
+# By the same token, if the character does not move during the animation, you
+# can use "for <time>" as an alternative for more natural reading.
+Dannie walks to the Window in 3 seconds
+
+# Actions are sequential by default.
+Dannie sobs for 5 seconds
+
+# Using "meanwhile" causes a direction to take effect at the same time as the
+# currently executing direction (Dannie sobbing).
+Meanwhile Alchymica mixes a potion for 4 seconds
+
+# Using a pronoun (he/she/they) automatically references the last directed
+# character. The language itself does not differentiate (pronouns for nodes
+# isn't useful), but it can make reading the scene more natural.
+He walks to the Bedside in 3 seconds
+
+# Signals the Fireworks node to do its thing. This is simply a call/signal to
+# the node in question.
+# TODO: should this be done via a signal (that *everyone* is queued into) with
+# a name of the particular event being cued? Or do we assume that the node
+# Fireworks by definition has a cue() function (or on_cue() function - 
+# defined by the designer) that gets called?
+Cue Fireworks
+
+# End the cutscene
+Fade out
