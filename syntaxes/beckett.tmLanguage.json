@@ -1,0 +1,133 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Beckett",
+	"patterns": [
+    {
+      "include": "#inline-comment"
+    },
+    {
+      "include": "#scene-definition"
+    },
+    {
+			"include": "#keywords"
+		},
+    {
+      "include": "#cue-direction"
+    },
+    {
+      "include": "#stage-direction"
+    },
+    {
+      "include": "#dialogue"
+    },
+		{
+			"include": "#strings"
+		},
+    {
+      "include": "#time-unit"
+    }
+	],
+	"repository": {
+    "scene-definition": {
+      "patterns": [
+        {
+          "match": "(?i)(scene|location):(?!\\b| )(.+)",
+          "name": "comment",
+          "captures": {
+            "1": {
+              "name": "keyword"
+            },
+            "2": {
+              "name": "entity.name.section"
+            }
+          }
+        }
+      ]
+    },
+    "cue-direction": {
+      "patterns": [
+        {
+          "match": "(?i)^(cue)\\b(.+)$",
+          "captures": {
+            "1": {
+              "name": "keyword"
+            },
+            "2": {
+              "name": "entity.name.class"
+            }
+          }
+        }
+      ]
+    },
+    "stage-direction": {
+      "patterns": [
+        {
+          "match": "^(?<meanwhile>meanwhile|Meanwhile)(?<character>.+)",
+          "captures": {
+            "meanwhile": {
+              "name": "meanwhile.keyword.beckett"
+            },
+            "2": {
+              "name": "character.entity.beckett"
+            },
+            "3": {
+              "name": "action.entity.beckett"
+            }
+          }
+        }
+      ]
+    },
+    "dialogue": {
+      "patterns": [{
+        "match": "^(.+)\\((.+)\\):(.+)",
+        "captures": {
+          "1": {
+            "name": "entity.name.class"
+          },
+          "2": {
+            "name": "entity.name.function"
+          },
+          "3": {
+            "name": "string"
+          }
+        }
+      }]
+    },
+    "time-period": {
+      "patterns": [{
+        "name": "comment.line",
+        "match": "\\b(for|in)\\b\\d+(seconds|minutes|hours)\\b"
+      }]
+    },
+    "time-unit": {
+      "patterns": [{
+        "name": "keyword",
+        "match": "\\bseconds?|minutes?|hours?\\b"
+      }]
+    },
+    "inline-comment": {
+      "patterns": [{
+        "name": "comment.line",
+        "match": "^(#|//|%).+$"
+      }]
+    },
+		"keywords": {
+			"patterns": [{
+				"name": "keyword",
+				"match": "(?i)\\b(fade|meanwhile|location)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.beckett",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.beckett",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.beckett"
+}

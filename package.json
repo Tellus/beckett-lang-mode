@@ -1,0 +1,25 @@
+{
+  "name": "beckett-syntax-highlighting",
+  "displayName": "beckett-syntax-highlighting",
+  "description": "Syntax highlighting for the Beckett cutscene language in Godot.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.77.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "beckett",
+      "aliases": ["Beckett", "beckett"],
+      "extensions": [".beckett"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "beckett",
+      "scopeName": "source.beckett",
+      "path": "./syntaxes/beckett.tmLanguage.json"
+    }]
+  }
+}
