@@ -100,24 +100,39 @@
     "stage-direction": {
       "patterns": [
         {
-          "match": "^(?i)(meanwhile),?",
+          "match": "^(?<actor>[_[:alnum:]]+)[ \\t]+(?<verb>(?:[[:alnum:]]+)+)(?:[ \\t]+(?<location>to[ \\t]+the[ \\t]+[_[:alnum:]]+))?[ \\t]*(,[ \\t]+(?:over|for|in)[ \\t]+\\d+[ \\t]+(?:milli)?seconds?)?[ \\t]*$",
           "captures": {
             "1": {
-              "name": "keyword"
+              "name": "entity.name.class"
+            },
+            "2": {
+              "name": "entity.name.function"
+            },
+            "3": {
+              "name": "variable"
+            },
+            "4": {
+              "name": "variable"
             }
           }
         },
         {
-          "match": "^(?i)(?:meanwhile,?[ \\t]+)?(?-i)(?<actor>[_[:alnum:]]+)[ \\t]+(?<verb>[_[:alnum:]]+)(?:(?:to|at|beside)the(?<location>))?(?:for|in|over)[ \\t]+(?<duration>\\d+)[ \\t]+(seconds?|minutes?|hours?)",
+          "match": "^(?i)(?<meanwhile>meanwhile,?[ \\t]+)?(?-i)(?<actor>[_[:alnum:]]+)[ \\t]+(?<verb>(?:[[:alnum:]]+)+)(?:[ \\t]+(?<location>to[ \\t]+the[ \\t]+[_[:alnum:]]+))?[ \\t]*(,[ \\t]+(?:over|for|in)[ \\t]+\\d+[ \\t]+(?:milli)?seconds?)?[ \\t]*$",
           "captures": {
             "1": {
-              "name": "actor"
+              "name": "keyword"
             },
             "2": {
-              "name": "verb"
+              "name": "entity.name.class"
             },
             "3": {
-              "name": "location"
+              "name": "entity.name.function"
+            },
+            "4": {
+              "name": "variable"
+            },
+            "5": {
+              "name": "variable"
             }
           }
         }
@@ -183,7 +198,7 @@
     "inline-comment": {
       "patterns": [{
         "name": "comment.line",
-        "match": "^(#|//|%).+$"
+        "match": "(#|//|%).+$"
       }]
     },
     "multiline-comment": {
