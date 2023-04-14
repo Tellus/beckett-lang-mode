@@ -1,79 +1,78 @@
 # Example of the Beckett cutscene language for Godot.
-# All keywords are CASE INSENSITIVE! This allows you to either keep strict
-# "human" grammar (all sentences must start with a capital letter) or a more
-# lax "programmer-centric" approach (all-lowercase)
+# All keywords are CASE INSENSITIVE! 
 
-/*
- * In general, whenever you are  pointing to an object in the scene (a character,
- * a location, a prop, a node, etc), you can either write its fully qualified
- * name ("MyCharacter") OR a more natural form ("My Character" or
- * "my character"). In the latter form, Beckett concatenates the name with a
- * preset concatenation style.
- * A NOTABLE exception: all cast of a scene must be a single string.
- * Concatenation style options:
- * - camelCase, so "my character" would become myCharacter
- * - snake_case, so "My Character" would become "my_character"
- * - PascalCase, so "My character" would become "MyCharacter"
- */
+Scene: Tutorial 1
 
-# "Preprocessing" directives declare global information about your cutscene,
-# such as the Godot scene to be used as the viewport/root of display, the name
-# of the scene (to be referenced from GDscript/C#/etc).
-Scene: Tutorial1
+# The basic scene to load. Contains tileset, marks for characters, etc.
+# You configure the contents of the scene, its characters, and any effects that
+# need to happen in the editor. This includes setting up animations for each
+# character.
+# This should be the path to the scene (alternatively namedclass of the script?)
+Location: AlchymicaHouse
 
- /*
- * The basic scene to load. Contains tileset, marks for characters, etc.
- * You configure the contents of the scene, its characters, and any effects that
- * need to happen in the editor. This includes setting up animations for each
- * character.
- * This should be the path to the scene (alternatively namedclass of the script?)
- * For this location (Alchymica House), the following concatenated values would
- * be used:
- * - "alchymica_house" for snake case
- * - "AlchymicaHouse" for Pascal case
- * - "alchymicaHouse" for camel case
- */
-Location: Alchymica House
-
-# Alternative way to spawn in characters. Maybe this makes it easier to 
-# Maintain characters across cutscenes?
-
+# A generally more robust way to spawn characters, because initial placement
+# can be done in this scene definition instead of baking it into the node.
 Cast:
-  Dannie in the corner of the room
-  Alchymica beside the bed
-  Adelphe in the bed
+- Dannie, by the bed
+- Alchymica
+- Adelphe, in the bed
 
 # Signifies start of the cutscene's manuscript
 Fade in
 
 # Dialogue (or anything that goes into the dialogue boxes).
 # Syntax:
-# <character>[(portrait_variant)]: <translation_key>
+# [meanwhile] <character>[(portrait_variant)]: <translation_key>
 Dannie(happily): I do believe we are acting out a scene.
-
-Dannie: Go set an example of them.
 
 # Actions direct characters to perform an animation, optionally with a target
 # location and timing.
 # Syntax:
-# <character> <animation_name>s [to the <node>] in/for <movement_time> <time_unit>
+# <then|meanwhile>[,] <character> <animation_name>s [, to the <node>] [, (in|for|over) <movement_time> <time_unit>[s]]
+# The initial comma is optional, for readability and style. The latter commas,
+# leading up to location or duration, are required.
 # The "s" for present tense is optional, but makes the language more natural.
 # By the same token, if the character does not move during the animation, you
 # can use "for <time>" as an alternative for more natural reading.
-Dannie walks to the Window in 3 seconds
+# It's necessary to specify a timing for this, because movement animations
+# generally loop. You could certainly create an entire animation that performs
+# the movement in space, but that makes it less re-usable. Specifying location
+# and duration here is still readable and makes the core animation a lot more
+# flexible.
+Then Dannie walks to the Window, in 3 seconds
 
 # Actions are sequential by default.
-Dannie sobs for 5 seconds
+# Time units should only be seconds? Or seconds and milliseconds, for very brief
+# or quick events?
+Then Dannie sobs, for 5 seconds
 
 # Using "meanwhile" causes a direction to take effect at the same time as the
 # currently executing direction (Dannie sobbing).
-Meanwhile Alchymica mixes a potion for 4 seconds
-meanwhile, Alchymica mixes a potion for 4 seconds
+Meanwhile Alchymica mixes a potion, for 4 seconds
+
+# All valid variations of stage directions.
+
+# Lasts as long as the animation.
+then Dannie laughs
+# Assumes the animation loops and will run it for 3 seconds.
+then, Dannie Laughs, for 3 seconds
+# Plural "s" is strictly optional. "3 second" is acceptable, as is "1 seconds".
+Then, Dannie sobs, for 1 second
+# Milliseconds are also supported. Hours/days, not so much.
+Then dannie chuckles, for 500 milliseconds
+# Lerps the actor from their current position to the target location over 3 seconds.
+Then, Dannie walks, to the bed, over 3 seconds
+# Concurrently runs an animation once.
+Meanwhile, Dannie laughs
+# Concurrently runs a looping animation for 3 seconds.
+Meanwhile Dannie laughs, for 3 seconds
+# Concurrently lerps the actor to a target location over 3 seconds.
+meanwhile Dannie walks, to the bed, over 3 seconds
 
 # Using a pronoun (he/she/they) automatically references the last directed
 # character. The language itself does not differentiate (pronouns for nodes
 # isn't useful), but it can make reading the scene more natural.
-He walks to the Bedside in 3 seconds
+Then He walks to the Bedside, in 3 seconds
 
 # Signals the Fireworks node to do its thing. This is simply a call/signal to
 # the node in question.
